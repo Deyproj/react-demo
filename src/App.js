@@ -1,24 +1,32 @@
 import logo from './logo.svg';
 import './App.css';
+import {Col, Container, Row} from 'reactstrap'
+import ListTasks from './ListTasks';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function App() {
+
+  const [tasks, setTasks] = useState([]);
+
+  const cargarTareas = () =>{
+    axios.get('http://localhost:9090/tasks')
+    .then(({data}) => setTasks(data));
+  }
+
+  useEffect (cargarTareas, []);
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+     <Container>
+        <Row>
+          <Col>
+              <ListTasks tasks={tasks} />
+          </Col>
+        </Row>
+     </Container>
+    </>
   );
 }
 
